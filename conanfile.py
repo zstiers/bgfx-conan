@@ -47,9 +47,11 @@ class BgfxConan(ConanFile):
         self.copy("*.exe", dst="bin", keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = ["bgfxd", "bimgd", "bxd"] if self.settings.build_type == "Debug" and self.settings.os == "Windows"  else ["bgfx", "bimg", "bx"]
+        self.cpp_info.libs = ["bgfx", "bimg", "bx"]
         self.cpp_info.libs.extend(["astc-codec", "astc", "edtaa3", "etc1", "etc2", "iqa", "squish", "nvtt", "pvrtc"])
         if self.settings.os == "Macos":
             self.cpp_info.exelinkflags = ["-framework Cocoa", "-framework QuartzCore", "-framework OpenGL", "-weak_framework Metal"]
         if self.settings.os == "Linux":
             self.cpp_info.libs.extend(["GL", "X11", "pthread", "dl"])
+        if self.settings.compiler == "Visual Studio":
+            self.cpp_info.includedirs.extend(["include/compat/msvc"])
